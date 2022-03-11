@@ -224,6 +224,19 @@ class AVLTree {
         if(nodeAt->key < key) return helpFind(key, value, nodeAt->right); // if value in node is less than key (so node to find would be in right subtree)
         else return helpFind(key, value, nodeAt->left); // if value in node is greater than key (so node to find would be in left subtree)
     }     
+
+    ostream& helpPrint(ostream& os, TreeNode* nodeAt, int level){
+        //*base case: if node is null
+        if(nodeAt == nullptr) return os;
+
+        //*recursive case: if node is not null
+            //first print right
+        helpPrint(os, nodeAt->right, ++level);
+            //second print self
+        
+            //third print left
+        return helpPrint(os, nodeAt->left, ++level);
+    }
 	
         // MEMBER DATA.  These are the data items that each BinarySearchTree object will contain.  Each tree will have a head and numElts
 	    TreeNode* root;
