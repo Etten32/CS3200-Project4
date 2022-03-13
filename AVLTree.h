@@ -64,10 +64,15 @@
 using namespace std;
 
 class AVLTree {
+    private:
+        class TreeNode;
+
     public:
         AVLTree();                                                  // creates a blank tree
 
         AVLTree(AVLTree& original);                                 // creates a deep copied tree
+
+        void helpMake(TreeNode* nodeAt, vector<TreeNode>* listToAdd);
 
         ~AVLTree();                                                 // deconstructs tree
 
@@ -77,13 +82,21 @@ class AVLTree {
 
         bool find(int key, string& value);                          // finds key and puts it into value or returns false
 
-        vector<string> findRange();                                 // finds range of keys and puts them into the vector
+        vector<string> findRange(int highKey, int lowKey);                                 // finds range of keys and puts them into the vector
 
         bool insert(int key, string value);
 
         friend ostream& operator<<(ostream& os, const AVLTree& me); // prints out AVLTree
 
     private:
+        bool insertNode(int key, string value, TreeNode*& nodeAt);
+
+        void deleteTree(TreeNode* nodeAt);
+
+        bool helpFind(int key, string& value, TreeNode* nodeAt);
+
+        ostream& helpPrint(ostream& os, TreeNode* nodeAt, int level) const;
+
 
 
 	    class TreeNode {
@@ -157,87 +170,7 @@ class AVLTree {
             }
 
 	};
-    bool insertNode(int key, string value, TreeNode* nodeAt){
-        //*base case 0: matching key is met
-        if(nodeAt->key == key) return false;
-
-        //*base case 1: next node == nullptr and node can be inserted
-            // add at right
-        if(nodeAt->key < key && nodeAt->right == nullptr){
-            nodeAt->linkRight(new TreeNode(key, value));
-            nodeAt->rightHeight = 1;
-            return true;
-        }
-            // add at left
-        if(nodeAt->key > key && nodeAt->left == nullptr){
-            nodeAt->linkLeft(new TreeNode(key, value));
-            nodeAt->leftHeight = 1;
-            return true;
-        }
-
-        //*base case 2: logic error occured!!
-        if(nodeAt->left == nullptr && nodeAt->right == nullptr) return false;
-
-        //*recursive case: else keep going till the right place is reached
-            // go to right
-        if(nodeAt->key < key){
-            if(insertNode(key, value, nodeAt->right)){
-                // assign right height to the greater of the right nodes heights heights + 1
-                nodeAt->rightHeight = (nodeAt->right->leftHeight >= nodeAt->right->rightHeight ? nodeAt->right->leftHeight: nodeAt->right->rightHeight) + 1;
-                return true;
-            }
-        }
-            
-            // go to left
-        else{
-            if(insertNode(key, value, nodeAt->left)){
-                // assign left height to the greater of the left nodes heights heights + 1
-                nodeAt->leftHeight = (nodeAt->left->leftHeight >= nodeAt->left->rightHeight ? nodeAt->left->leftHeight: nodeAt->left->rightHeight) + 1;
-                return true;
-            }
-        }
-    }
-
-    // recursive function to delete nodes
-    void deleteTree(TreeNode* nodeAt){
-        //*base case: if node is null
-        if(nodeAt == nullptr) return;
-
-        //*recursive case: if node is not null call deleteTree on right and left subtrees
-        deleteTree(nodeAt->right);
-        deleteTree(nodeAt->left);
-        delete(nodeAt);
-    }
-
-    // recursive function to help find node
-    bool helpFind(int key, string& value, TreeNode* nodeAt){
-        //*base case 0: if node is null
-        if(nodeAt == nullptr) return false;
-
-        //*base case 1: if key is found
-        if(nodeAt->key == key){
-            value = nodeAt->elt;
-            return true;
-        }
-
-        //*recursive case: call helpFind() on appropriate pointer
-        if(nodeAt->key < key) return helpFind(key, value, nodeAt->right); // if value in node is less than key (so node to find would be in right subtree)
-        else return helpFind(key, value, nodeAt->left); // if value in node is greater than key (so node to find would be in left subtree)
-    }     
-
-    ostream& helpPrint(ostream& os, TreeNode* nodeAt, int level){
-        //*base case: if node is null
-        if(nodeAt == nullptr) return os;
-
-        //*recursive case: if node is not null
-            //first print right
-        helpPrint(os, nodeAt->right, ++level);
-            //second print self
-        
-            //third print left
-        return helpPrint(os, nodeAt->left, ++level);
-    }
-	
+    
         // MEMBER DATA.  These are the data items that each BinarySearchTree object will contain.  Each tree will have a head and numElts
 	    TreeNode* root;
 	    int numElts;   // Number of elements in the sequence
