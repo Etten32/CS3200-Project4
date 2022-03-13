@@ -6,31 +6,29 @@ AVLTree::AVLTree(){
     root = nullptr;
     numElts = 0;
 }                                 
-/*// ----------------------------------------------------------------------------   FIX HERE!
+//*// ----------------------------------------------------------------------------   FIX HERE!
 // creates a deep copied tree
 AVLTree::AVLTree(AVLTree& original){
+    // set up initials
+    root = nullptr;
+    numElts = 0;
     // recursively go through the original tree adding all nodes that aren't nullptr
-    vector<TreeNode>* listToAdd = new vector<TreeNode>();
-    helpMake(original.root, listToAdd);
-
-    // add all node copy's values into 'this' (the new tree)
-    for(int i = 0; i < listToAdd->size(); i++) this->insert(listToAdd[i].key, listToAdd[i].elt);
-    delete(listToAdd);
+    helpMake(original.root, this);
 }    
 
-void AVLTree::helpMake(TreeNode* nodeAt, vector<TreeNode>* listToAdd){
+void AVLTree::helpMake(TreeNode* nodeAt, AVLTree* treeToAdd){
         //*base case: if node is null
         if(nodeAt == nullptr) return;
 
         //*recursive case: if node is not null
-            //first add right
-        helpMake(nodeAt->right, listToAdd);
-            //second add copy of self
-        listToAdd->push_back(*nodeAt);
+            //first add copy of self
+        treeToAdd->insert(nodeAt->key, nodeAt->elt);
+            //second add right
+        helpMake(nodeAt->right, treeToAdd);
             //third print left
-        helpMake(nodeAt->left, listToAdd);
+        helpMake(nodeAt->left, treeToAdd);
 }
-*/
+//*/
 // deconstructs tree
 AVLTree::~AVLTree(){
     deleteTree(root);

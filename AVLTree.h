@@ -72,7 +72,7 @@ class AVLTree {
 
         AVLTree(AVLTree& original);                                 // creates a deep copied tree
 
-        void helpMake(TreeNode* nodeAt, vector<TreeNode>* listToAdd);
+        void helpMake(TreeNode* nodeAt, AVLTree* treeToAdd);
 
         ~AVLTree();                                                 // deconstructs tree
 

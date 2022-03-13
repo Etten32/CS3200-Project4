@@ -1,6 +1,7 @@
 //J+M+J
 #include "AVLTree.h"
 int main(){
+    cout << "TESTING CONSTRUCTOR AND INSERT()" << endl;
     AVLTree* test = new AVLTree();
     cout << *test << endl << "------------------------" << endl;
 
@@ -31,17 +32,23 @@ int main(){
     test->insert(25,"memem");
     cout << *test << endl << "------------------------" << endl;
 
+    cout << "TESTING FIND()" << endl;
     string jail;
     cout << test->find(30, jail) << endl << "------------------------" << endl;
 
     cout << jail << endl << "------------------------" << endl;
-/*
-    AVLTree actual = *test;
-    AVLTree* boppers = new AVLTree(actual);
+//*
+    cout << "TESTING COPY CONSTRUCTOR" << endl;
+    AVLTree* boppers = new AVLTree(*test);
     cout << *test << endl << "------------------------" << endl;
     cout << *boppers << endl << "------------------------" << endl;
-*/
 
+    boppers->insert(15, "sophi");
+    cout << *test << endl << "------------------------" << endl;
+    cout << *boppers << endl << "------------------------" << endl;
+//*/
+
+    cout << "TESTING FINDRANGE()" << endl;
     vector<string> prison = test->findRange(0,40);
     prison.size();
     for(int i = 0; i < prison.size(); i++){ // help from: https://www.javatpoint.com/cpp-vector-size-function
@@ -52,7 +59,7 @@ int main(){
     cout << "are all in prison...." <<endl << "------------------------" << endl;
 
     
-
+    cout << "TESTING FOR MEMORYLEAKS" << endl;
     for(int i = 100000; i =! 0; i--){
         AVLTree* memLeak = new AVLTree();
         memLeak->insert(0,"a");
@@ -63,6 +70,5 @@ int main(){
         delete(memLeak);
     }
 
-    system("pause");
     //
 }
