@@ -1,6 +1,6 @@
 //J+M+J
 /** FILE: AVLTree.h
-// CLASS:PROVIDED: AVLTree
+// CLASS: PROVIDED: AVLTree
 //
 // *v*v*v*v* PUBLIC: *v*v*v*v*
 // CONSTRUCTORS:
@@ -15,7 +15,7 @@
 //  ~AVLTree()
 //      Postcondition: recursively deletes all nodes
 //
-// INFORMATION:FUNCTIONS:
+// INFORMATION: FUNCTIONS:
 //  int AVLTree::getHeight()
 //      Postcondition: condition-0 (no nodes present) = returns 0
 //                     condition-1 (nodes present) = returns the height of the AVLTree by getting the higher of 
@@ -34,7 +34,7 @@
 //      Postcondition: returns vector containing all values with key pair within the range of
 //                     AVLTree::findRange().lowkey and AVLTree::findRange().lowkey inclusively
 //
-// MUTATION:FUNCTIONS:
+// MUTATION: FUNCTIONS:
 //  bool AVLTree::insert(int key, string value)
 //      Postcondition: condition-0 = returns false if item error occcured or key was already inserted
 //                     condition-1 = returns true if insert was correct
@@ -44,7 +44,7 @@
 //      Postcondition: prints out tree to AVLTree::operator<<().os and returns it
 //
 // *v*v*v*v* PRIVATE: *v*v*v*v*
-// INFORMATION:FUNCTIONS:
+// INFORMATION: FUNCTIONS:
 //  bool AVLTree::helpFind(int key, string& value, TreeNode nodeAt)
 //      Postcondition: condition-0 = returns false if key was not found in this or any sub-branches and 
 //                                   AVLTree::find().value is left empty
@@ -72,7 +72,7 @@ class AVLTree {
 
         AVLTree(AVLTree& original);                                 // creates a deep copied tree
 
-        void helpMake(TreeNode* nodeAt, AVLTree* treeToAdd);
+        void helpMake(TreeNode* nodeAt, AVLTree* treeToAdd);                            /** NEEDS: DOCUMENTED: **/
 
         ~AVLTree();                                                 // deconstructs tree
 
@@ -82,20 +82,28 @@ class AVLTree {
 
         bool find(int key, string& value);                          // finds key and puts it into value or returns false
 
-        vector<string> findRange(int highKey, int lowKey);                                 // finds range of keys and puts them into the vector
+        vector<string> findRange(int highKey, int lowKey);          // finds range of keys and puts them into the vector
 
         bool insert(int key, string value);
 
         friend ostream& operator<<(ostream& os, const AVLTree& me); // prints out AVLTree
 
+        void rightRotate(TreeNode toRotate);                                            /** NEEDS: DOCUMENTED: **/
+
+        void doubleRightR(TreeNode toRotate);                                           /** NEEDS: DOCUMENTED: **/
+
+        void leftRotate(TreeNode toRotate);                                             /** NEEDS: DOCUMENTED: **/
+
+        void doubleLeftR(TreeNode toRotate);                                            /** NEEDS: DOCUMENTED: **/
+
     private:
-        bool insertNode(int key, string value, TreeNode*& nodeAt);
+        bool insertNode(int key, string value, TreeNode*& nodeAt);                      /** NEEDS: DOCUMENTED: **/
 
-        void deleteTree(TreeNode* nodeAt);
+        void deleteTree(TreeNode* nodeAt);                                              /** NEEDS: DOCUMENTED: **/
 
-        bool helpFind(int key, string& value, TreeNode* nodeAt);
+        bool helpFind(int key, string& value, TreeNode* nodeAt);                        /** NEEDS: DOCUMENTED: **/
 
-        ostream& helpPrint(ostream& os, TreeNode* nodeAt, int level) const;
+        ostream& helpPrint(ostream& os, TreeNode* nodeAt, int level) const;             /** NEEDS: DOCUMENTED: **/
 
 
 
@@ -103,6 +111,7 @@ class AVLTree {
 
 
 	    public:
+        /** NEEDS: DOCUMENTED: **/ // vvv ALL VARS BELOW vvv
 		    TreeNode *right;
 		    TreeNode *left;
             TreeNode *parent;
@@ -111,7 +120,7 @@ class AVLTree {
             int rightHeight;
             int leftHeight;
 
-		    TreeNode(int inKey, string inElt) { // defualt constructor
+		    TreeNode(int inKey, string inElt) { // defualt constructor          
 			    right = nullptr;
 			    left = nullptr;
                 parent = nullptr;
@@ -131,6 +140,7 @@ class AVLTree {
 
             ~TreeNode() {}; // not needed since 'new' is not used
 
+            /** NEEDS: DOCUMENTED: **/
             // to link node to the next by left pointer
             bool linkLeft(TreeNode* node) {
                 if(left == nullptr){
@@ -140,6 +150,8 @@ class AVLTree {
                 }
                 return false;
             }
+            
+            /** NEEDS: DOCUMENTED: **/
             // to link node to the next by right pointer
             bool linkRight(TreeNode* node) {
                 if(right == nullptr){
@@ -150,6 +162,7 @@ class AVLTree {
                 return false;
             }
 
+            /** NEEDS: DOCUMENTED: **/
             // to unlink left node from the this
             bool unlinkLeft(){
                 if(left != nullptr){
@@ -159,6 +172,8 @@ class AVLTree {
                 }
                 return false;
             }
+            
+            /** NEEDS: DOCUMENTED: **/
             // to unlink right node from this
             bool unlinkRight(){
                 if(right != nullptr){
