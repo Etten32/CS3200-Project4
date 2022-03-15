@@ -72,6 +72,29 @@ bool AVLTree::insert(int key, string value){
     return false;
 }
 
+bool AVLTree::testRotate(int key, char shift){
+    return testRotate(key, this->root, shift);
+}
+
+bool AVLTree::testRotate(int key, TreeNode* nodeAt, char shift){
+        //*base case 0: if node is null
+        if(nodeAt == nullptr) return false;
+
+        //*base case 1: if key is found
+        if(nodeAt->key == key){
+            if(shift == 'r') rightRotate(nodeAt);
+            else if(shift == 'l') leftRotate(nodeAt);
+            else if(shift == 'R') doubleRightR(nodeAt);
+            else if(shift == 'L') doubleLeftR(nodeAt);
+            else return false;
+            return true;
+        }
+
+        //*recursive case: call helpFind() on appropriate pointer
+        if(nodeAt->key < key) return testRotate(key, nodeAt->right, shift); // if value in node is less than key (so node to find would be in right subtree)
+        else return testRotate(key, nodeAt->left, shift);
+}
+
 // makes a single right rotate at node
 bool AVLTree::rightRotate(TreeNode* toRotate){
     if(toRotate == nullptr || toRotate->left == nullptr) return false;
@@ -90,7 +113,7 @@ bool AVLTree::rightRotate(TreeNode* toRotate){
     toRotate->unlinkLeft(); 
     hook->linkRight(toRotate);
     if(clip != nullptr) toRotate->linkLeft(clip);
-    /** LINK: PARENT: TO: HOOK:**/
+    parent->replacePointerWith(toRotate, hook);
     return true;
 }                                          
 

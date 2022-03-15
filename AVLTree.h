@@ -88,6 +88,10 @@ class AVLTree {
 
         friend ostream& operator<<(ostream& os, const AVLTree& me); // prints out AVLTree
 
+        bool testRotate(int key, char shift);
+
+        bool testRotate(int key, TreeNode* nodeAt, char shift);
+        
         bool rightRotate(TreeNode* toRotate);                                            /** NEEDS: DOCUMENTED: **/
 
         bool doubleRightR(TreeNode* toRotate);                                           /** NEEDS: DOCUMENTED: **/
@@ -150,6 +154,13 @@ class AVLTree {
                 }
                 return false;
             }
+
+            /** NEEDS: DOCUMENTED: **/
+            // to unconditionally link node to the next by left pointer
+            void bangLinkLeft(TreeNode* node){
+                left = node;
+                node->parent = this;
+            }
             
             /** NEEDS: DOCUMENTED: **/
             // to link node to the next by right pointer
@@ -160,6 +171,13 @@ class AVLTree {
                     return true;
                 }
                 return false;
+            }
+
+            /** NEEDS: DOCUMENTED: **/
+            // to unconditionally link node to the next by left pointer
+            void bangLinkRight(TreeNode* node){
+                right = node;
+                node->parent = this;
             }
 
             /** NEEDS: DOCUMENTED: **/
@@ -185,9 +203,12 @@ class AVLTree {
             }
 
             /** NEEDS: DOCUMENTED: **/
-            // to unlink matching node from this
-            bool unlink(TreeNode* toMatch){
-                
+            // to link node with where old was
+            bool replacePointerWith(TreeNode* old, TreeNode* replaceWith){
+                if(this->left->key == old->key) this->bangLinkLeft(replaceWith);
+                else if(this->right->key == old->key) this->bangLinkRight(replaceWith);
+                else return false;
+                return true;
             }
 
 	};

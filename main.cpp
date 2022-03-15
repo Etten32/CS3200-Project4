@@ -60,7 +60,7 @@ int main(){
 
     
     cout << "TESTING FOR MEMORYLEAKS" << endl;
-    for(int i = 100000; i =! 0; i--){
+/*    for(int i = 1000; i =! 0; i--){
         AVLTree* memLeak = new AVLTree();
         memLeak->insert(0,"a");
         memLeak->insert(1,"b");
@@ -68,7 +68,18 @@ int main(){
         memLeak->insert(3,"d");
         memLeak->insert(4,"e");
         delete(memLeak);
-    }
+    }*/
 
-    //
+    //ROTATE TESTING
+    AVLTree* rotateTree = new AVLTree();
+    rotateTree->insert(4, "Maria");
+    rotateTree->insert(3, "Bill");
+    rotateTree->insert(2, "Thill");
+    rotateTree->insert(1, "Phil");
+    cout << "BEFORE ROTATE" << endl << "------------------------" << endl;
+    cout << *rotateTree << endl << "------------------------" << endl;
+    rotateTree->testRotate(3, 'r');
+    cout << "AFTER ROTATE" << endl << "------------------------" << endl;
+    cout << *rotateTree << endl << "------------------------" << endl;
+
 }
