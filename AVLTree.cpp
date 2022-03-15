@@ -72,6 +72,43 @@ bool AVLTree::insert(int key, string value){
     return false;
 }
 
+// makes a single right rotate at node
+bool AVLTree::rightRotate(TreeNode* toRotate){
+    if(toRotate == nullptr || toRotate->left == nullptr) return false;
+    
+    TreeNode* hook = toRotate->left;
+    TreeNode* clip = hook->right;
+    // if node to rotate at is the root
+    if(toRotate->key == this->root->key){
+        if(clip != nullptr) hook->unlinkRight();
+
+        return true;
+    }
+    TreeNode* parent = toRotate->parent;
+
+    if(clip != nullptr) hook->unlinkRight();
+    toRotate->unlinkLeft(); 
+    hook->linkRight(toRotate);
+    if(clip != nullptr) toRotate->linkLeft(clip);
+    /** LINK: PARENT: TO: HOOK:**/
+    return true;
+}                                          
+
+// makes a double left rotate at node
+bool AVLTree::doubleRightR(TreeNode* toRotate){
+    return leftRotate(toRotate->left) && rightRotate(toRotate);
+}                                         
+
+// makes a single left rotate at node
+bool AVLTree::leftRotate(TreeNode* toRotate){
+
+}                                          
+
+// makes a double left rotate at node
+bool AVLTree::doubleLeftR(TreeNode* toRotate){
+    return rightRotate(toRotate->right) && leftRotate(toRotate);
+}    
+
 // prints out AVLTree
 
 ostream& operator<<(ostream& os, const AVLTree& me){

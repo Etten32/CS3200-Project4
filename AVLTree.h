@@ -88,13 +88,13 @@ class AVLTree {
 
         friend ostream& operator<<(ostream& os, const AVLTree& me); // prints out AVLTree
 
-        void rightRotate(TreeNode toRotate);                                            /** NEEDS: DOCUMENTED: **/
+        bool rightRotate(TreeNode* toRotate);                                            /** NEEDS: DOCUMENTED: **/
 
-        void doubleRightR(TreeNode toRotate);                                           /** NEEDS: DOCUMENTED: **/
+        bool doubleRightR(TreeNode* toRotate);                                           /** NEEDS: DOCUMENTED: **/
 
-        void leftRotate(TreeNode toRotate);                                             /** NEEDS: DOCUMENTED: **/
+        bool leftRotate(TreeNode* toRotate);                                             /** NEEDS: DOCUMENTED: **/
 
-        void doubleLeftR(TreeNode toRotate);                                            /** NEEDS: DOCUMENTED: **/
+        bool doubleLeftR(TreeNode* toRotate);                                            /** NEEDS: DOCUMENTED: **/
 
     private:
         bool insertNode(int key, string value, TreeNode*& nodeAt);                      /** NEEDS: DOCUMENTED: **/
@@ -182,6 +182,12 @@ class AVLTree {
                     return true;
                 }
                 return false;
+            }
+
+            /** NEEDS: DOCUMENTED: **/
+            // to unlink matching node from this
+            bool unlink(TreeNode* toMatch){
+                
             }
 
 	};
