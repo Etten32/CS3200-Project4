@@ -104,7 +104,10 @@ bool AVLTree::rightRotate(TreeNode* toRotate){
     // if node to rotate at is the root
     if(toRotate->key == this->root->key){
         if(clip != nullptr) hook->unlinkRight();
-
+        toRotate->unlinkLeft(); 
+        hook->linkRight(toRotate);
+        if(clip != nullptr) toRotate->linkLeft(clip);
+        this->root = hook;
         return true;
     }
     TreeNode* parent = toRotate->parent;
@@ -124,7 +127,27 @@ bool AVLTree::doubleRightR(TreeNode* toRotate){
 
 // makes a single left rotate at node
 bool AVLTree::leftRotate(TreeNode* toRotate){
+    if(toRotate == nullptr || toRotate->right == nullptr) return false;
+    
+    TreeNode* hook = toRotate->right;
+    TreeNode* clip = hook->left;
+    // if node to rotate at is the root
+    if(toRotate->key == this->root->key){
+        if(clip != nullptr) hook->unlinkLeft();
+        toRotate->unlinkRight(); 
+        hook->linkLeft(toRotate);
+        if(clip != nullptr) toRotate->linkRight(clip);
+        this->root = hook;
+        return true;
+    }
+    TreeNode* parent = toRotate->parent;
 
+    if(clip != nullptr) hook->unlinkLeft();
+    toRotate->unlinkRight(); 
+    hook->linkLeft(toRotate);
+    if(clip != nullptr) toRotate->linkRight(clip);
+    parent->replacePointerWith(toRotate, hook);
+    return true;
 }                                          
 
 // makes a double left rotate at node

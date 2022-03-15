@@ -88,9 +88,9 @@ class AVLTree {
 
         friend ostream& operator<<(ostream& os, const AVLTree& me); // prints out AVLTree
 
-        bool testRotate(int key, char shift);
+        bool testRotate(int key, char shift);                                           /** NEEDS: DOCUMENTED: **/
 
-        bool testRotate(int key, TreeNode* nodeAt, char shift);
+        bool testRotate(int key, TreeNode* nodeAt, char shift);                         /** NEEDS: DOCUMENTED: **/
         
         bool rightRotate(TreeNode* toRotate);                                            /** NEEDS: DOCUMENTED: **/
 
@@ -205,8 +205,8 @@ class AVLTree {
             /** NEEDS: DOCUMENTED: **/
             // to link node with where old was
             bool replacePointerWith(TreeNode* old, TreeNode* replaceWith){
-                if(this->left->key == old->key) this->bangLinkLeft(replaceWith);
-                else if(this->right->key == old->key) this->bangLinkRight(replaceWith);
+                if(this->left != nullptr && this->left->key == old->key) this->bangLinkLeft(replaceWith);
+                else if(this->right != nullptr && this->right->key == old->key) this->bangLinkRight(replaceWith);
                 else return false;
                 return true;
             }
