@@ -34,11 +34,10 @@ AVLTree::~AVLTree(){
     deleteTree(root);
 }                                
 
+
 // returns height (highest height of root)
 int AVLTree::getHeight(){
-    if(numElts > 0) return root->leftHeight >= root->rightHeight ? root->leftHeight: root->rightHeight; // return the heigher of the two heights in the root
-    //                                                                                                     asistance from this site to format ternary operator: 
-    //                                                                                                     https://www.programiz.com/cpp-programming/ternary-operator
+    if(numElts > 0) return root->getHeight();
     return 0; // if tree has no nodes
 }                           
 
@@ -108,15 +107,18 @@ bool AVLTree::rightRotate(TreeNode* toRotate){
         hook->linkRight(toRotate);
         if(clip != nullptr) toRotate->linkLeft(clip);
         this->root = hook;
-        return true;
     }
-    TreeNode* parent = toRotate->parent;
+    else{
+        TreeNode* parent = toRotate->parent;
 
-    if(clip != nullptr) hook->unlinkRight();
-    toRotate->unlinkLeft(); 
-    hook->linkRight(toRotate);
-    if(clip != nullptr) toRotate->linkLeft(clip);
-    parent->replacePointerWith(toRotate, hook);
+        if(clip != nullptr) hook->unlinkRight();
+        toRotate->unlinkLeft(); 
+        hook->linkRight(toRotate);
+        if(clip != nullptr) toRotate->linkLeft(clip);
+        parent->replacePointerWith(toRotate, hook);
+    }
+    toRotate->recalculateHeight();
+    hook->recalculateHeight();
     return true;
 }                                          
 
@@ -138,15 +140,18 @@ bool AVLTree::leftRotate(TreeNode* toRotate){
         hook->linkLeft(toRotate);
         if(clip != nullptr) toRotate->linkRight(clip);
         this->root = hook;
-        return true;
     }
-    TreeNode* parent = toRotate->parent;
+    else{
+        TreeNode* parent = toRotate->parent;
 
-    if(clip != nullptr) hook->unlinkLeft();
-    toRotate->unlinkRight(); 
-    hook->linkLeft(toRotate);
-    if(clip != nullptr) toRotate->linkRight(clip);
-    parent->replacePointerWith(toRotate, hook);
+        if(clip != nullptr) hook->unlinkLeft();
+        toRotate->unlinkRight(); 
+        hook->linkLeft(toRotate);
+        if(clip != nullptr) toRotate->linkRight(clip);
+        parent->replacePointerWith(toRotate, hook);
+    }
+    toRotate->recalculateHeight();
+    hook->recalculateHeight();
     return true;
 }                                          
 
@@ -170,7 +175,7 @@ ostream& AVLTree::helpPrint(ostream& os, TreeNode* nodeAt, int level) const{
         helpPrint(os, nodeAt->right, level + 1);
             //second print self
         for(int i = 0; i < level; i++) os << "     ";
-        os << nodeAt->key << ", " << nodeAt->elt << endl;
+        os << nodeAt->key << ", " << nodeAt->elt << " H = " << nodeAt->getHeight() << " B = " << nodeAt->leftHeight - nodeAt->rightHeight << endl;
             //third print left
         return helpPrint(os, nodeAt->left, level + 1);
     }
@@ -207,8 +212,14 @@ ostream& AVLTree::helpPrint(ostream& os, TreeNode* nodeAt, int level) const{
             // go to right
         if(nodeAt->key < key){
             if(insertNode(key, value, nodeAt->right)){
-                // assign right height to the greater of the right nodes heights heights + 1
-                nodeAt->rightHeight = (nodeAt->right->leftHeight >= nodeAt->right->rightHeight ? nodeAt->right->leftHeight: nodeAt->right->rightHeight) + 1;
+                // recalculate heights after a node has been inserted
+                nodeAt->recalculateHeight();
+                //check if left rotations are needed (-2)
+                if(nodeAt->getBalance() == -2){
+                    if(nodeAt->right->getBalance() > 0) doubleLeftR(nodeAt); // if it needs a double rotation
+                    else leftRotate(nodeAt); // otherwise it needs a single rotation
+                }
+                nodeAt->recalculateHeight();
                 return true;
             }
         }
@@ -216,8 +227,14 @@ ostream& AVLTree::helpPrint(ostream& os, TreeNode* nodeAt, int level) const{
             // go to left
         else{
             if(insertNode(key, value, nodeAt->left)){
-                // assign left height to the greater of the left nodes heights heights + 1
-                nodeAt->leftHeight = (nodeAt->left->leftHeight >= nodeAt->left->rightHeight ? nodeAt->left->leftHeight: nodeAt->left->rightHeight) + 1;
+                // recalculate heights after a node has been inserted
+                nodeAt->recalculateHeight();
+                //check if right rotations are needed (2)
+                if(nodeAt->getBalance() == 2){
+                    if(nodeAt->left->getBalance() < 0) doubleRightR(nodeAt); // if it needs a double rotation
+                    else rightRotate(nodeAt); // otherwise it needs a single rotation
+                }
+                nodeAt->recalculateHeight();
                 return true;
             }
         }

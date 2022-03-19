@@ -76,21 +76,21 @@ int main(){
     rotateTree->insert(3, "Bill");
     rotateTree->insert(2, "Thill");
 
-    cout << "BEFORE ROTATE" << endl << "------------------------" << endl;
+    //cout << "BEFORE ROTATE" << endl << "------------------------" << endl;
 
-    cout << *rotateTree << endl << "------------------------" << endl;
-    rotateTree->testRotate(4, 'r');
+    //cout << *rotateTree << endl << "------------------------" << endl;
+    //rotateTree->testRotate(4, 'r');
     cout << "AFTER ROTATE" << endl << "------------------------" << endl;
     cout << *rotateTree << endl << "------------------------" << endl;
 
     rotateTree->insert(1, "Phil");
     rotateTree->insert(0, "Therese");
 
-    cout << "BEFORE 2nd ROTATE" << endl << "------------------------" << endl;
+    //cout << "BEFORE 2nd ROTATE" << endl << "------------------------" << endl;
 
-    cout << *rotateTree << endl << "------------------------" << endl;
+    //cout << *rotateTree << endl << "------------------------" << endl;
     
-    rotateTree->testRotate(2, 'r');
+    //rotateTree->testRotate(2, 'r');
     cout << "AFTER 2nd ROTATE" << endl << "------------------------" << endl;
     cout << *rotateTree << endl << "------------------------" << endl;
 
@@ -100,11 +100,11 @@ int main(){
     rotateTree->insert(5, "Therese");
     //rotateTree->insert(6, "Therese");
 
-    cout << "BEFORE 3rd ROTATE" << endl << "------------------------" << endl;
+    //cout << "BEFORE 3rd ROTATE" << endl << "------------------------" << endl;
 
-    cout << *rotateTree << endl << "------------------------" << endl;
+    //cout << *rotateTree << endl << "------------------------" << endl;
     
-    rotateTree->testRotate(4, 'L');
+    //rotateTree->testRotate(4, 'L');
     cout << "AFTER 3rd ROTATE" << endl << "------------------------" << endl;
     cout << *rotateTree << endl << "------------------------" << endl;
 

@@ -145,6 +145,29 @@ class AVLTree {
             ~TreeNode() {}; // not needed since 'new' is not used
 
             /** NEEDS: DOCUMENTED: **/
+            // recalculates height
+            void recalculateHeight(){
+                if(this->right == nullptr) rightHeight = 0;
+                else this->rightHeight = this->right->getHeight() + 1;
+                if(this->left == nullptr) leftHeight = 0;
+                else this->leftHeight = this->left->getHeight() + 1;
+            }
+
+            /** NEEDS: DOCUMENTED: **/
+            // get height of a node
+            int getHeight(){
+                return this->leftHeight >= this->rightHeight ? this->leftHeight: this->rightHeight;                // return the heigher of the two heights in the root
+            //                                                                                                     asistance from this site to format ternary operator: 
+            //                                                                                                     https://www.programiz.com/cpp-programming/ternary-operator
+            }
+
+            /** NEEDS: DOCUMENTED: **/
+            // calculate and get balance of a node
+            int getBalance(){
+                return leftHeight - rightHeight;
+            }
+
+            /** NEEDS: DOCUMENTED: **/
             // to link node to the next by left pointer
             bool linkLeft(TreeNode* node) {
                 if(left == nullptr){
