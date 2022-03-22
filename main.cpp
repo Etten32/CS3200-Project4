@@ -109,6 +109,15 @@ int main(){
     cout << *rotateTree << endl << "------------------------" << endl;
 
 
+    AVLTree* equalsTest = new AVLTree();
 
+    equalsTest->insert(33, "Blindman");
+    equalsTest->insert(43, "Gregor");
+
+    cout << "BEFORE =" << endl << "------------------------" << endl;
+    cout << *equalsTest << endl << "------------------------" << endl;
+    *equalsTest = *rotateTree;
+    cout << "AFTER =" << endl << "------------------------" << endl;
+    cout << *equalsTest << endl << "------------------------" << endl;
 
 }

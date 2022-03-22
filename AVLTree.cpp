@@ -31,7 +31,7 @@ void AVLTree::helpMake(TreeNode* nodeAt, AVLTree* treeToAdd){
 //*/
 // deconstructs tree
 AVLTree::~AVLTree(){
-    deleteTree(root);
+    clearTree(root);
 }                                
 
 
@@ -158,7 +158,26 @@ bool AVLTree::leftRotate(TreeNode* toRotate){
 // makes a double left rotate at node
 bool AVLTree::doubleLeftR(TreeNode* toRotate){
     return rightRotate(toRotate->right) && leftRotate(toRotate);
-}    
+} 
+///*
+
+AVLTree& AVLTree::operator=( const AVLTree& toTransfer ){
+    // clear whatever is there first
+    this->clearTree(this->root->left);
+    this->clearTree(this->root->right);
+
+    TreeNode* toDelete = this->root;
+    this->root = nullptr;
+    
+    // copy over from toTransfer
+    //AVLTree* copyPtr = toTransfer.root;
+    this->makeTree(toTransfer.root);
+
+    delete(toDelete);
+
+    return (*this);
+
+}//*/
 
 // prints out AVLTree
 
@@ -242,14 +261,25 @@ ostream& AVLTree::helpPrint(ostream& os, TreeNode* nodeAt, int level) const{
     }
 
     // recursive function to delete nodes
-    void AVLTree::deleteTree(TreeNode* nodeAt){
+    void AVLTree::clearTree(TreeNode* nodeAt){
         //*base case: if node is null
         if(nodeAt == nullptr) return;
 
         //*recursive case: if node is not null call deleteTree on right and left subtrees
-        deleteTree(nodeAt->right);
-        deleteTree(nodeAt->left);
+        this->clearTree(nodeAt->right);
+        this->clearTree(nodeAt->left);
         delete(nodeAt);
+    }
+
+    // recursively inserts from a given node into this tree
+    void AVLTree::makeTree(TreeNode* nodeAt){
+        //*base case: if node is null
+        if(nodeAt == nullptr) return;
+
+        //*recursive case: add subtrees and itself to tree
+        makeTree(nodeAt->left);
+        makeTree(nodeAt->right);
+        this->insert(nodeAt->key, nodeAt->elt);
     }
 
     // recursive function to help find node

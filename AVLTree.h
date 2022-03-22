@@ -72,8 +72,6 @@ class AVLTree {
 
         AVLTree(AVLTree& original);                                 // creates a deep copied tree
 
-        void helpMake(TreeNode* nodeAt, AVLTree* treeToAdd);                            /** NEEDS: DOCUMENTED: **/
-
         ~AVLTree();                                                 // deconstructs tree
 
         int getHeight();                                            // returns height (highest height of root)
@@ -84,13 +82,13 @@ class AVLTree {
 
         vector<string> findRange(int highKey, int lowKey);          // finds range of keys and puts them into the vector
 
-        bool insert(int key, string value);
+        bool insert(int key, string value);                                             /** NEEDS: DOCUMENTED: **/
+
+        AVLTree& operator=(const AVLTree& toTransfer);                              /** NEEDS: DOCUMENTED: **/
 
         friend ostream& operator<<(ostream& os, const AVLTree& me); // prints out AVLTree
 
         bool testRotate(int key, char shift);                                           /** NEEDS: DOCUMENTED: **/
-
-        bool testRotate(int key, TreeNode* nodeAt, char shift);                         /** NEEDS: DOCUMENTED: **/
         
         bool rightRotate(TreeNode* toRotate);                                            /** NEEDS: DOCUMENTED: **/
 
@@ -101,9 +99,16 @@ class AVLTree {
         bool doubleLeftR(TreeNode* toRotate);                                            /** NEEDS: DOCUMENTED: **/
 
     private:
+    
+        bool testRotate(int key, TreeNode* nodeAt, char shift);                         /** NEEDS: DOCUMENTED: **/
+
+        void helpMake(TreeNode* nodeAt, AVLTree* treeToAdd);                            /** NEEDS: DOCUMENTED: **/
+
         bool insertNode(int key, string value, TreeNode*& nodeAt);                      /** NEEDS: DOCUMENTED: **/
 
-        void deleteTree(TreeNode* nodeAt);                                              /** NEEDS: DOCUMENTED: **/
+        void clearTree(TreeNode* nodeAt);                                        /** NEEDS: DOCUMENTED: **/
+
+        void makeTree(TreeNode* nodeAt);                                                /** NEEDS: DOCUMENTED: **/
 
         bool helpFind(int key, string& value, TreeNode* nodeAt);                        /** NEEDS: DOCUMENTED: **/
 
@@ -148,13 +153,12 @@ class AVLTree {
             // recalculates height
             void recalculateHeight(){
                 if(this->right == nullptr) rightHeight = 0;
-                else this->rightHeight = this->right->getHeight() + 1;
+                else this->rightHeight = this->right->getHeight() + 1; // height is one more than previous
                 if(this->left == nullptr) leftHeight = 0;
-                else this->leftHeight = this->left->getHeight() + 1;
+                else this->leftHeight = this->left->getHeight() + 1; // height is one more than previous
             }
 
-            /** NEEDS: DOCUMENTED: **/
-            // get height of a node
+            // get the height of a node in the treee
             int getHeight(){
                 return this->leftHeight >= this->rightHeight ? this->leftHeight: this->rightHeight;                // return the heigher of the two heights in the root
             //                                                                                                     asistance from this site to format ternary operator: 
@@ -167,8 +171,11 @@ class AVLTree {
                 return leftHeight - rightHeight;
             }
 
-            /** NEEDS: DOCUMENTED: **/
-            // to link node to the next by left pointer
+            //* to link node to the next by left pointer
+            //  bool TreeNode::linkLeft(TreeNode* node)
+            //      Postcondition: condition-0 = returns false if left pointer was not nullptr
+            //                     condition-1 = returns true left pointer was nullptr and links 
+            //                     this->left to AVLTree::find().node and AVLTree::find().node->parent to this
             bool linkLeft(TreeNode* node) {
                 if(left == nullptr){
                     left = node;
@@ -178,14 +185,20 @@ class AVLTree {
                 return false;
             }
 
-            /** NEEDS: DOCUMENTED: **/
-            // to unconditionally link node to the next by left pointer
+            //* to link node to the next by left pointer regardless of TreeNode*'s state
+            //  bool TreeNode::linkLeft(TreeNode* node)
+            //      Postcondition: this->left to AVLTree::find().node and AVLTree::find().node->parent to this
+            //                     to unconditionally link node to the next by left pointer
             void bangLinkLeft(TreeNode* node){
                 left = node;
                 node->parent = this;
             }
             
-            /** NEEDS: DOCUMENTED: **/
+            //* to link node to the next by right pointer
+            //  bool TreeNode::linkRight(TreeNode* node)
+            //      Postcondition: condition-0 = returns false if left pointer was not nullptr
+            //                     condition-1 = returns true left pointer was nullptr and links 
+            //                     this->right to AVLTree::find().node and AVLTree::find().node->parent to this
             // to link node to the next by right pointer
             bool linkRight(TreeNode* node) {
                 if(right == nullptr){
@@ -196,15 +209,18 @@ class AVLTree {
                 return false;
             }
 
-            /** NEEDS: DOCUMENTED: **/
-            // to unconditionally link node to the next by left pointer
+            //* to link node to the next by right pointer regardless of TreeNode*'s state
+            //  bool TreeNode::linkRight(TreeNode* node)
+            //      Postcondition: this->right to AVLTree::find().node and AVLTree::find().node->parent to this
+            //                     to unconditionally link node to the next by left pointer
             void bangLinkRight(TreeNode* node){
                 right = node;
                 node->parent = this;
             }
 
-            /** NEEDS: DOCUMENTED: **/
-            // to unlink left node from the this
+            //* to unlink left node from the this
+            //  bool TreeNode::unlinkRight()
+            //      Postcondition: this->left->parent is set to nullptr as well as this->left
             bool unlinkLeft(){
                 if(left != nullptr){
                     left->parent = nullptr;
@@ -214,8 +230,9 @@ class AVLTree {
                 return false;
             }
             
-            /** NEEDS: DOCUMENTED: **/
-            // to unlink right node from this
+            //* to unlink left node from the this
+            //  bool TreeNode::unlinkRight()
+            //      Postcondition: this->right->parent is set to nullptr as well as this->right
             bool unlinkRight(){
                 if(right != nullptr){
                     right->parent = nullptr;
@@ -225,8 +242,11 @@ class AVLTree {
                 return false;
             }
 
-            /** NEEDS: DOCUMENTED: **/
-            // to link node with where old was
+            //* to link node with where old was
+            //  bool TreeNode::replacePointerWith
+            //      Precondition: TreeNode::replacePointerWith().old and TreeNode::replacePointerWith().replaceWith
+            //                    must not be nullptr
+            //      Postcondition: /** FINISH: **/
             bool replacePointerWith(TreeNode* old, TreeNode* replaceWith){
                 if(this->left != nullptr && this->left->key == old->key) this->bangLinkLeft(replaceWith);
                 else if(this->right != nullptr && this->right->key == old->key) this->bangLinkRight(replaceWith);
