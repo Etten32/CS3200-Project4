@@ -6,16 +6,17 @@ AVLTree::AVLTree(){
     root = nullptr;
     numElts = 0;
 }                                 
-//*// ----------------------------------------------------------------------------   FIX HERE!
+
 // creates a deep copied tree
 AVLTree::AVLTree(AVLTree& original){
     // set up initials
     root = nullptr;
     numElts = 0;
     // recursively go through the original tree adding all nodes that aren't nullptr
-    helpMake(original.root, this);
+    this->makeTree(original.root);
 }    
-
+/* 
+//* DEPRECATED
 // Adds all nodes in subtree of AVLTree::helpMake().nodeAt inclusive to AVLTree::helpMake().treeToAdd
 void AVLTree::helpMake(TreeNode* nodeAt, AVLTree* treeToAdd){
         //*base case: if node is null
@@ -30,6 +31,7 @@ void AVLTree::helpMake(TreeNode* nodeAt, AVLTree* treeToAdd){
         helpMake(nodeAt->left, treeToAdd);
 }
 //*/
+
 // deconstructs tree
 AVLTree::~AVLTree(){
     clearTree(root);
@@ -133,8 +135,8 @@ bool AVLTree::doubleRightR(TreeNode* toRotate){
 bool AVLTree::leftRotate(TreeNode* toRotate){
     if(toRotate == nullptr || toRotate->right == nullptr) return false;
     
-    TreeNode* hook = toRotate->right;
-    TreeNode* clip = hook->left;
+    TreeNode* hook = toRotate->right;   // hook node
+    TreeNode* clip = hook->left;        // temp storage
     // if node to rotate at is the root
     if(toRotate->key == this->root->key){
         if(clip != nullptr) hook->unlinkLeft();
@@ -144,6 +146,7 @@ bool AVLTree::leftRotate(TreeNode* toRotate){
         this->root = hook;
     }
     else{
+        // if node to rotate isn't the root
         TreeNode* parent = toRotate->parent;
 
         if(clip != nullptr) hook->unlinkLeft();
@@ -152,6 +155,7 @@ bool AVLTree::leftRotate(TreeNode* toRotate){
         if(clip != nullptr) toRotate->linkRight(clip);
         parent->replacePointerWith(toRotate, hook);
     }
+    // recalculate changed heights after insert / rotation
     toRotate->recalculateHeight();
     hook->recalculateHeight();
     return true;
@@ -173,7 +177,6 @@ AVLTree& AVLTree::operator=( const AVLTree& toTransfer ){
     this->numElts--;
 
     // copy over from toTransfer
-    //AVLTree* copyPtr = toTransfer.root;
     this->makeTree(toTransfer.root);
 
     delete(toDelete);
@@ -197,7 +200,7 @@ ostream& AVLTree::helpPrint(ostream& os, TreeNode* nodeAt, int level) const{
         helpPrint(os, nodeAt->right, level + 1);
             //second print self
         for(int i = 0; i < level; i++) os << "     ";
-        os << nodeAt->key << ", " << nodeAt->elt << " H = " << nodeAt->getHeight() << " B = " << nodeAt->leftHeight - nodeAt->rightHeight << endl;
+        os << nodeAt->key << ", " << nodeAt->elt << /*" H = " << nodeAt->getHeight() << " B = " << nodeAt->leftHeight - nodeAt->rightHeight << */endl;
             //third print left
         return helpPrint(os, nodeAt->left, level + 1);
     }
@@ -272,6 +275,7 @@ void AVLTree::clearTree(TreeNode* nodeAt){
         this->clearTree(nodeAt->right);
         this->clearTree(nodeAt->left);
         delete(nodeAt);
+        this->numElts--;
     }
 
 // recursively inserts from a given node into this tree
@@ -280,9 +284,9 @@ void AVLTree::makeTree(TreeNode* nodeAt){
         if(nodeAt == nullptr) return;
 
         //*recursive case: add subtrees and itself to tree
+        this->insert(nodeAt->key, nodeAt->elt);
         makeTree(nodeAt->left);
         makeTree(nodeAt->right);
-        this->insert(nodeAt->key, nodeAt->elt);
     }
 
 // recursive function to help find node

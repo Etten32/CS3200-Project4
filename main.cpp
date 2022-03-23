@@ -1,6 +1,7 @@
 //J+M+J
 #include "AVLTree.h"
 int main(){
+    //* TESTING CONSTRUCTOR AND INSERT
     cout << "TESTING CONSTRUCTOR AND INSERT()" << endl;
     AVLTree* test = new AVLTree();
     cout << *test << endl << "------------------------" << endl;
@@ -32,12 +33,13 @@ int main(){
     test->insert(25,"memem");
     cout << *test << endl << "------------------------" << endl;
 
+    //* TESTING FIND
     cout << "TESTING FIND()" << endl;
     string jail;
     cout << test->find(30, jail) << endl << "------------------------" << endl;
 
     cout << jail << endl << "------------------------" << endl;
-//*
+    //* TESTING COPY CONSTRUCTOR
     cout << "TESTING COPY CONSTRUCTOR" << endl;
     AVLTree* boppers = new AVLTree(*test);
     cout << *test << endl << "------------------------" << endl;
@@ -46,8 +48,8 @@ int main(){
     boppers->insert(15, "sophi");
     cout << *test << endl << "------------------------" << endl;
     cout << *boppers << endl << "------------------------" << endl;
-//*/
-
+    
+    //* TESTING FINDRANGE
     cout << "TESTING FINDRANGE()" << endl;
     vector<string> prison = test->findRange(0,40);
     prison.size();
@@ -58,7 +60,7 @@ int main(){
         }
     cout << "are all in prison...." <<endl << "------------------------" << endl;
 
-    
+    //* TESTING FOR MEMORYLEAKS (UNCOMMENT TO USE)
     cout << "TESTING FOR MEMORYLEAKS" << endl;
 /*    for(int i = 1000; i =! 0; i--){
         AVLTree* memLeak = new AVLTree();
@@ -70,7 +72,7 @@ int main(){
         delete(memLeak);
     }*/
 
-    //ROTATE TESTING
+    //* TESTING FOR ROTATIONS (COMMENTED IS FOR PRE-AUTO-ROTATE ON INSERT)
     AVLTree* rotateTree = new AVLTree();
     rotateTree->insert(4, "Maria");
     rotateTree->insert(3, "Bill");
@@ -107,17 +109,21 @@ int main(){
     //rotateTree->testRotate(4, 'L');
     cout << "AFTER 3rd ROTATE" << endl << "------------------------" << endl;
     cout << *rotateTree << endl << "------------------------" << endl;
+    cout << rotateTree->getSize() << endl << "------------------------" << endl;
 
-
+    //* TESTING FOR OPERATOR =
     AVLTree* equalsTest = new AVLTree();
 
     equalsTest->insert(33, "Blindman");
     equalsTest->insert(43, "Gregor");
+    equalsTest->insert(53, "GreenlandKing");
 
     cout << "BEFORE =" << endl << "------------------------" << endl;
     cout << *equalsTest << endl << "------------------------" << endl;
+    cout << equalsTest->getSize() << endl << "------------------------" << endl;
     *equalsTest = *rotateTree;
     cout << "AFTER =" << endl << "------------------------" << endl;
     cout << *equalsTest << endl << "------------------------" << endl;
+    cout << equalsTest->getSize() << endl << "------------------------" << endl;
 
 }

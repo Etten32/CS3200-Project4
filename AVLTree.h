@@ -26,7 +26,7 @@
 //                     returns AVLTree::numElts
 //
 //  bool AVLTree::find(int key, string& value)
-//      Predcondition: AVLTree::find().value contains an empty string reference to copy the value to once found
+//      Precondition: AVLTree::find().value contains an empty string reference to copy the value to once found
 //      Postcondition: condition-0 = returns false if item is not found and AVLTree::find().value is left empty
 //                     condition-1 = returns true if item is found and AVLTree::find().value contains value
 //
@@ -76,14 +76,14 @@
 //
 // *v*v*v*v* PRIVATE: *v*v*v*v*
 // INFORMATION: FUNCTIONS:
-//  bool AVLTree::helpFind(int key, string& value, TreeNode nodeAt)
+//  bool AVLTree::helpFind(int key, string& value, TreeNode nodeAt) - RECURSIVE
 //      Postcondition: condition-0 = returns false if key was not found in this or any sub-branches and 
 //                                   AVLTree::find().value is left empty
 //                     condition-1 = returns true if key was found in this or any sub-branch and 
 //                                   AVLTree::find().value contains value
 //
 // MUTATION: FUNCTIONS:
-//  bool AVLTree::testRotate(int key, TreeNode* nodeAt, char shift)
+//  bool AVLTree::testRotate(int key, TreeNode* nodeAt, char shift) - RECURSIVE
 //      Postcondition: condition-0 = returns false if AVLTree::testRotate().shift does not match any valid imput types ('l','L','r','R')
 //                     condition-1 = returns false if AVLTree::testRotate().key is not found in AVLTree::testRotate().nodeAt * subtree inclusive
 //                     condition-2 = returns false if the desired rotation at key failed (see rotation functions)
@@ -94,11 +94,30 @@
 //                      key ='r' : single right rotation
 //                      key = 'R' : double right rotation
 //
-//  void deleteTree(TreeNode* nodeAt)
+//  void AVLTree::clearTree(TreeNode* nodeAt) - RECURSIVE
 //      Postcondition: condition-0 = returns if AVLTree::deleteTree().nodeAt == nullptr
-//                     condition-1 = calls AVLTree::deleteTree() on AVLTree::deleteTree().nodeAt->left and 
-//                                   AVLTree::deleteTree().nodeAt->right children and then deletes 
-//                                   AVLTree::deleteTree().nodeAt
+//                     condition-1 = calls AVLTree::clearTree() on AVLTree::deleteTree().nodeAt->left and 
+//                                   AVLTree::clearTree().nodeAt->right children and then deletes 
+//                                   AVLTree::clearTree().nodeAt
+//
+//  void AVLTree::makeTree(TreeNode* nodeAt) - RECURSIVE
+//      Postcondition: condition-0 = returns early if AVLTree::makeMake().nodeAt is nullptr
+//                     condition-1 = returns copies entire subtree of AVLTree::makeMake().nodeAt inclusively to this *
+//
+//  void AVLTree::insertNode(int key, string value, TreeNode*& nodeAt) - RECURSIVE
+//      Postcondition: condition-0 = returns false if AVLTree::insertNode().key matches an already present key
+//                     condition-1 = returns true and inserts new node if AVLTree::insertNode().nodeAt is nullptr
+//                     condition-2 = returns true and inserts if right or left is nullptr and node should be inserted in that direction
+//      On true return: Checks balances and implements any needed rotations
+//
+//  bool helpFind(int key, string& value, TreeNode* nodeAt) - RECURSIVE
+//      Postcondition: recursively go through left and right tree until a condition is met
+//                     condition-0 = return false if AVLTree::helpFind().nodeAt is nullptr
+//                     condition-1 = return true if key is found after copying elt to AVLTree::helpFind().value
+//
+//  ostream& AVLTree::helpPrint(ostream& os, TreeNode* nodeAt, int level) const - RECURSIVE
+//      Postcondition: recursviely go through left and right tree and print out nodes with 
+//                     varying amounts of spaces based on AVLTree::helpPrint().level
 **/
 
 #include <iostream>
@@ -145,17 +164,17 @@ class AVLTree {
     
         bool testRotate(int key, TreeNode* nodeAt, char shift);     // recursive helper function to test rotate for nodeAt and down (see testRotate(int,char))
 
-        void helpMake(TreeNode* nodeAt, AVLTree* treeToAdd);                            /** NEEDS: DOCUMENTED: **/
+        //void helpMake(TreeNode* nodeAt, AVLTree* treeToAdd);        // recursive helper function to create a tree from the subtree inclusive of AVLTree::helpMake().nodeAt - DEPRECATED
 
-        bool insertNode(int key, string value, TreeNode*& nodeAt);                      /** NEEDS: DOCUMENTED: **/
+        bool insertNode(int key, string value, TreeNode*& nodeAt);  // recursive helper function to insert a node into this * tree and perform needed rotations
 
-        void clearTree(TreeNode* nodeAt);                                        /** NEEDS: DOCUMENTED: **/
+        void clearTree(TreeNode* nodeAt);                           // recursively delete all subtrees of nodeAt inclusively
 
-        void makeTree(TreeNode* nodeAt);                                                /** NEEDS: DOCUMENTED: **/
+        void makeTree(TreeNode* nodeAt);                            // recursive helper function to create a tree from the subtree inclusively of AVLTree::makeTree().nodeAt
 
-        bool helpFind(int key, string& value, TreeNode* nodeAt);                        /** NEEDS: DOCUMENTED: **/
+        bool helpFind(int key, string& value, TreeNode* nodeAt);    // recursive helper function to locate and copy a node value given a key
 
-        ostream& helpPrint(ostream& os, TreeNode* nodeAt, int level) const;             /** NEEDS: DOCUMENTED: **/
+        ostream& helpPrint(ostream& os, TreeNode* nodeAt, int level) const; // recursive helper function to go through tree and print it
 
 	    class TreeNode {
 
